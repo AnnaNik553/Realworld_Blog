@@ -2,6 +2,7 @@ import './ArticleEdit.scss'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams, Navigate } from 'react-router-dom'
+import { Alert, Space } from 'antd'
 
 import ArticleForm from '../../components/ArticleForm'
 import { useAuth } from '../../hooks/useAuth'
@@ -10,7 +11,7 @@ import { fetchEditArticle, fetchGetArticle } from '../../store/slices/articleSli
 const ArticleEdit = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
-  const { token } = useAuth()
+  const { token, username } = useAuth()
   const article = useSelector((state) => state.articles.article)
   const status = useSelector((state) => state.articles.status)
 
@@ -35,7 +36,22 @@ const ArticleEdit = () => {
   if (status === 'updated') {
     return <Navigate to="/articles" />
   }
-  return <ArticleForm onSubmit={onSubmit} articleData={article} header="Edit article" />
+  if (status === 'resolved' && username !== article.author.username) {
+    return (
+      <div className="error-box">
+        <Space direction="vertical" style={{ width: '100%' }}>
+          <Alert
+            message="Warning"
+            description="You cannot edit this article because you are not its author."
+            type="warning"
+            showIcon
+            closable
+          />
+        </Space>
+      </div>
+    )
+  }
+  return !!article && <ArticleForm onSubmit={onSubmit} articleData={article} header="Edit article" />
 }
 
 export default ArticleEdit

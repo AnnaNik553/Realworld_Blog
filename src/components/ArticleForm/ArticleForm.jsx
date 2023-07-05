@@ -36,6 +36,21 @@ const ArticleForm = ({ onSubmit, articleData, header }) => {
     }
   }, [articleData, setValue, replace])
 
+  function checkData(data) {
+    const { tagList, ...other } = data
+    const emptyFields = Object.keys(other).filter((field) => other[field].trim() === '')
+    if (emptyFields.length) {
+      emptyFields.forEach((field) => setError(field, { message: 'Field should not be empty' }))
+      return
+    }
+    const newOther = Object.keys(other).reduce((acc, field) => {
+      acc[field] = other[field].trim()
+      return acc
+    }, {})
+    const newData = { tagList, ...newOther }
+    onSubmit(newData, setError, reset)
+  }
+
   const titleInput = {
     id: 'title',
     label: 'Title',
@@ -71,7 +86,7 @@ const ArticleForm = ({ onSubmit, articleData, header }) => {
   return (
     <div className="form form-article">
       <h2 className="form__header">{header}</h2>
-      <form className="form__tag" onSubmit={handleSubmit((data) => onSubmit(data, setError, reset))}>
+      <form className="form__tag" onSubmit={handleSubmit((data) => checkData(data))}>
         <FormItem {...titleInput} errors={errors} />
         <FormItem {...descriptionInput} errors={errors} />
         <FormItem {...textInput} errors={errors} />

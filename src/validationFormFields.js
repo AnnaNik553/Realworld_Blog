@@ -75,7 +75,6 @@ export const imageValidation = () => {
 export const titleValidation = () => {
   return {
     ...requireValidation,
-    ...noEmptyValidation,
     maxLength: {
       value: 5000,
       message: 'Your title must contain no more than 5000 characters.',
@@ -86,7 +85,6 @@ export const titleValidation = () => {
 export const textValidation = () => {
   return {
     ...requireValidation,
-    ...noEmptyValidation,
   }
 }
 
