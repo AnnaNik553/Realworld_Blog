@@ -5,6 +5,7 @@
 - @reduxjs/toolkit
 - react-router-dom
 - react-hook-form
+- antd
 
 ## Ссылка на приложение
 
