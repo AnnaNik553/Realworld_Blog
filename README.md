@@ -6,6 +6,7 @@
 - react-router-dom
 - react-hook-form
 - antd
+- date-fns
 
 ## Ссылка на приложение
 
